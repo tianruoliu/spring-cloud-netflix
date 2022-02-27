@@ -123,8 +123,11 @@ class FeignClientsRegistrar implements ImportBeanDefinitionRegistrar,
 				FeignClient.class);
 		final Class<?>[] clients = attrs == null ? null
 				: (Class<?>[]) attrs.get("clients");
+		// clients默认为空
 		if (clients == null || clients.length == 0) {
+			// 注解过滤器
 			scanner.addIncludeFilter(annotationTypeFilter);
+			// 获取包名集合
 			basePackages = getBasePackages(metadata);
 		}
 		else {
@@ -279,6 +282,9 @@ class FeignClientsRegistrar implements ImportBeanDefinitionRegistrar,
 	protected ClassPathScanningCandidateComponentProvider getScanner() {
 		return new ClassPathScanningCandidateComponentProvider(false, this.environment) {
 
+			/**
+			 * 重写isCandidateComponent方法
+			 * */
 			@Override
 			protected boolean isCandidateComponent(
 					AnnotatedBeanDefinition beanDefinition) {
