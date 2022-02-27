@@ -16,6 +16,7 @@
 
 package org.springframework.cloud.netflix.feign.ribbon;
 
+import com.netflix.ribbon.RibbonResponse;
 import feign.Client;
 import feign.Request;
 import feign.Response;
@@ -81,9 +82,13 @@ public class FeignLoadBalancer extends
 		return new RibbonResponse(request.getUri(), response);
 	}
 
+	/**
+	 * 重试入口
+	 * */
 	@Override
 	public RequestSpecificRetryHandler getRequestSpecificRetryHandler(
 			RibbonRequest request, IClientConfig requestConfig) {
+		// 读取配置的重试参数
 		if (this.clientConfig.get(CommonClientConfigKey.OkToRetryOnAllOperations,
 				false)) {
 			return new RequestSpecificRetryHandler(true, true, this.getRetryHandler(),
